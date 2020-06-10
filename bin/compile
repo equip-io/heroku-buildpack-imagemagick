@@ -13,9 +13,21 @@ mkdir -p $VENDOR_DIR
 INSTALL_DIR="$VENDOR_DIR/imagemagick"
 mkdir -p $INSTALL_DIR
 IMAGE_MAGICK_VERSION="${IMAGE_MAGICK_VERSION:-7.0.10-18}"
-CACHE_FILE="$CACHE_DIR/imagemagick-$IMAGE_MAGICK_VERSIONfoo.tar.gz"
+CACHE_FILE="$CACHE_DIR/imagemagick-$IMAGE_MAGICK_VERSIONbar.tar.gz"
 
 if [ ! -f $CACHE_FILE ]; then
+  # install dependencies for HEIC
+  sudo apt-get install libwebp-dev libde265-dev
+  wget https://github.com/strukturag/libheif/archive/v1.3.2.tar.gz
+  tar -xvf v1.3.2.tar.gz 
+  cd libheif-1.3.2/
+  ./autogen.sh 
+  ./configure 
+  make
+  sudo make install
+  cd ..
+  rm -rf libheif-1.3.2/
+
   # install imagemagick
   IMAGE_MAGICK_FILE="ImageMagick-$IMAGE_MAGICK_VERSION.tar.xz"
   IMAGE_MAGICK_DIR="ImageMagick-$IMAGE_MAGICK_VERSION"
